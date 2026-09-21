@@ -6,7 +6,8 @@ export const httpClient = axios.create({
 
 httpClient.interceptors.request.use(
   function (config) {
-    console.log("PROUUUT !");
+    const token = localStorage.getItem("token");
+    config.headers.Authorization = `Authorization: Bearer ${token}`;
     return config;
   }
 );
