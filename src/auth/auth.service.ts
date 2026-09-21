@@ -1,0 +1,11 @@
+import { httpClient } from "../api/http-client";
+
+export default async function loginUser(username: string, password: string) {
+
+   const response = await httpClient.post("/auth/login", {
+         username,
+         password,
+      });
+
+      return response.data;
+}
