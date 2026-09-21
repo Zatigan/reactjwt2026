@@ -1,6 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
-import loginUser from './auth.service';
+import { loginUser } from './auth.service';
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -10,8 +10,9 @@ export function LoginPage() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
-    await loginUser(username, password);
-    navigate('/todos');
+      const response = await loginUser(username, password);
+      localStorage.setItem("token", response.token);
+      navigate('/todos');
     } catch (error) {
       console.error(error);
     }
