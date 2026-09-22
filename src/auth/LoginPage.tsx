@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { SubmitEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { loginUser } from './auth.service';
 
@@ -7,7 +7,7 @@ export function LoginPage() {
   const [username, setUsername] = useState('bastien@example.com');
   const [password, setPassword] = useState('tacostacos');
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent) {
     event.preventDefault();
     try {
       const response = await loginUser(username, password);
