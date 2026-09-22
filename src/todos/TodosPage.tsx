@@ -1,9 +1,9 @@
-import { type FormEvent, useEffect, useState } from 'react';
+import { SubmitEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import type { TodoItem } from './todo-item';
 import { createTodo, getTodos } from './todo.service';
-import { userLogout } from '../auth/auth.service';
+import { getRoles, hasRole, userLogout } from '../auth/auth.service';
 
 export function TodosPage() {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ export function TodosPage() {
     void loadTodos();
   }, []);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent) {
     event.preventDefault();
 
     const trimmedTitle = title.trim();
@@ -49,6 +49,9 @@ export function TodosPage() {
     navigate('/');
   }
 
+  const token = localStorage.getItem("token") ?? "";
+  const userRole = hasRole(getRoles(token));
+
   return (
     <>
       <h2>Todos</h2>
@@ -60,24 +63,26 @@ export function TodosPage() {
           <li>No todo yet.</li>
         )}
       </ul>
+      {userRole === "ADMIN" && (
+        <section>
+          <h2>Create a new todo item:</h2>
+          <form onSubmit={handleSubmit}>
+            <label>
+              <span>Title: </span>
+              <input
+                autoComplete="off"
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
+                required
+              />
+            </label>
 
-      <h2>Create a new todo item:</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          <span>Title: </span>
-          <input
-            autoComplete="off"
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
-            required
-          />
-        </label>
-
-        <button type="submit" disabled={!title.trim() || isSubmitting}>
-          {isSubmitting ? 'Adding…' : 'Add'}
-        </button>
-      </form>
-
+            <button type="submit" disabled={!title.trim() || isSubmitting}>
+              {isSubmitting ? 'Adding…' : 'Add'}
+            </button>
+          </form>
+        </section>
+      )}
       <button type="button" onClick={logout}>
         Déconnexion
       </button>
