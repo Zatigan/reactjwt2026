@@ -1,16 +1,21 @@
-import { type FormEvent, useState } from 'react';
+import { SubmitEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { loginUser } from './auth.service';
 
 export function LoginPage() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('bastien@example.com');
   const [password, setPassword] = useState('tacostacos');
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent) {
     event.preventDefault();
-
-    // TODO: authenticate against the backend before navigating.
-    navigate('/todos');
+    try {
+      const response = await loginUser(username, password);
+      localStorage.setItem("token", response.token);
+      navigate('/todos');
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
