@@ -1,6 +1,6 @@
 import { SubmitEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { loginUser } from './auth.service';
+import { getRoles, hasRole, loginUser } from './auth.service';
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -12,6 +12,10 @@ export function LoginPage() {
     try {
       const response = await loginUser(username, password);
       localStorage.setItem("token", response.token);
+      const roleData = getRoles(response.token);
+      const role = hasRole(roleData);
+      console.log(role);
+      
       navigate('/todos');
     } catch (error) {
       console.error(error);
