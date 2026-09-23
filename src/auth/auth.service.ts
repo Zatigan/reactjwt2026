@@ -15,15 +15,23 @@ export function userLogout() {
 }
 
 export function getRoles(token: string) {
+   const splitJWT = token.split(".");
+
+   if(splitJWT.length !== 3) {
+      return "";
+   }
+
    // En version décomposée
-   // const splittedToken = token.split(".")[1];
-   // const decodedPayload = atob(splittedToken);
+   // const decodedPayload = atob(splitJWT[1]);
    // const parsePayload = JSON.parse(decodedPayload);
    // const userRole = parsePayload.scope.split(" ");
    // return userRole[0];
 
    // En version synthétique
-   const userRole = JSON.parse(atob(token.split('.')[1]).toString()).scope.split(" ");
+   const userRole = JSON.parse(atob(splitJWT[1]))
+   .scope
+   .split(" ");
+
    return userRole[0];
 }
 

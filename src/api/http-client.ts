@@ -8,7 +8,7 @@ httpClient.interceptors.request.use(
   function (config) {
     const token = localStorage.getItem("token");
     // Envoi du token partout sauf sur le login
-    if (config.url != "/auth/login") {
+    if (token != null && token != "" && config.url != "/auth/login") {
       config.headers.Authorization = `Bearer ${token}`;
     }
 

@@ -1,6 +1,6 @@
 import { SubmitEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { getRoles, loginUser } from './auth.service';
+import { loginUser } from './auth.service';
 
 export function LoginPage() {
   const navigate = useNavigate();
