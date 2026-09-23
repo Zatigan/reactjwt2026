@@ -48,10 +48,7 @@ export function TodosPage() {
     userLogout();
     navigate('/');
   }
-
-  const token = localStorage.getItem("token") ?? "";
-  const userRole = hasRole(getRoles(token));
-
+  
   return (
     <>
       <h2>Todos</h2>
@@ -63,7 +60,7 @@ export function TodosPage() {
           <li>No todo yet.</li>
         )}
       </ul>
-      {userRole === "ADMIN" && (
+      {hasRole("ROLE_ADMIN") && (
         <section>
           <h2>Create a new todo item:</h2>
           <form onSubmit={handleSubmit}>

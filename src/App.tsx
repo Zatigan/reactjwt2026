@@ -2,7 +2,8 @@ import { Navigate, Route, Routes } from 'react-router';
 
 import { LoginPage } from './auth/LoginPage';
 import { TodosPage } from './todos/TodosPage';
-import ProtectedRoute from './auth/ProtectedRoute';
+import ProtectedRoute from './components/ProtectedRoute';
+import RoleRoute from './components/RoleRoute';
 
 export function App() {
   return (
@@ -11,8 +12,11 @@ export function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/todos" element={
           <ProtectedRoute>
-            <TodosPage />
-          </ProtectedRoute>}
+            <RoleRoute roles={['ROLE_ADMIN']}>
+              <TodosPage />
+            </RoleRoute>
+          </ProtectedRoute>
+        }
         />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
